@@ -1,0 +1,5 @@
+# Global Gitignore at root
+mongo-data/
+.env
+*.log
+.DS_Store
