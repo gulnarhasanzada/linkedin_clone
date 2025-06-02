@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 const addressSchema = new mongoose.Schema({
     street: {
         type: String,
@@ -22,4 +22,4 @@ const addressSchema = new mongoose.Schema({
     },
 }, { _id : false });
 
-module.exports = addressSchema;
+export default addressSchema;
