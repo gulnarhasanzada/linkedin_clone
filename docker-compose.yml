@@ -2,7 +2,30 @@ version: "3.8"
 services:
   auth-service:
     build: ./services/auth-service
+    volumes:
+      - ./services/auth-service:/app
+      - /app/node_modules
     ports:
-      - "4000:4000"
+      - "4001:3000"
     env_file:
       - ./services/auth-service/.env
+    command: ["npm", "run", "dev"]
+  host:
+    build: ./linkedin-ui/host
+    volumes:
+      - ./linkedin-ui/host:/app
+      - /app/node_modules
+    ports:
+      - "5001:5173"
+    command: ["npm", "run", "dev", "--", "--host"]
+  auth:
+    build: ./linkedin-ui/auth
+    volumes:
+      - ./linkedin-ui/auth:/app
+      - /app/node_modules
+    ports: 
+      - "5002:5174"
+    env_file:
+      - ./linkedin-ui/auth/.env
+    command: ["npm", "run", "dev", "--", "--host"]
+

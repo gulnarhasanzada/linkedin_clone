@@ -1,0 +1,56 @@
+services:
+  host:
+    build: 
+      context: ./linkedin-ui/host
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./linkedin-ui/host:/app
+      - /app/node_modules
+    ports:
+      - "5001:5173"
+    command: ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+
+  auth:
+    build: 
+      context: ./linkedin-ui/auth
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./linkedin-ui/auth:/app
+      - /app/node_modules
+    ports: 
+      - "5002:4174"
+    env_file:
+      - ./linkedin-ui/auth/.env
+    command: ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+    depends_on:
+      - auth-service
+
+
+  # Backend
+  auth-service:
+    build: 
+      context: ./services/auth-service
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./services/auth-service:/app
+      - /app/node_modules
+    ports:
+      - "4001:3000"
+    env_file:
+      - ./services/auth-service/.env
+    command: ["npm", "run", "dev"]
+
+
+  api-gateway:
+    build: 
+      context: ./services/api-gateway
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./services/api-gateway:/app
+      - /app/node_modules
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./services/api-gateway/.env
+    depends_on:
+      - auth-service
