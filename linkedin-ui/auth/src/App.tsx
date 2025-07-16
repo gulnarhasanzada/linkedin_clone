@@ -1,11 +1,13 @@
-import './App.css'
+import { Route, Routes } from "react-router";
+import { appRoutes } from "./routes";
 
 function AuthApp() {
-  const list = Array.from({length: 100000}, (_,i)=>i+1)
   return (
-    <>
-      {list.map((i)=><h5 className='bg-red-300'>Hello from Auth App.tsx {i}</h5>) }
-    </>
+    <Routes>
+        {appRoutes.map(({ path, element }) => (
+          <Route key={path} path={path} element={element} />
+        ))}
+    </Routes>
   )
 }
 
